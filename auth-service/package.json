@@ -1,0 +1,8 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  }
+}
