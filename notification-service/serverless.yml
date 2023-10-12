@@ -1,0 +1,13 @@
+service: notification-service
+frameworkVersion: '3'
+
+provider:
+  memorySize: 256
+  name: aws
+  region: us-east-1
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+
+functions:
+  function1:
+    handler: index.handler
