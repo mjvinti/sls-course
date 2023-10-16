@@ -9,8 +9,15 @@ const { uploadPictureToS3 } = require('../lib/uploadPictureToS3');
 const uploadAuctionPicture = async (event, context) => {
   const {
     body,
+    requestContext: {
+      authorizer: { email }
+    },
     pathParameters: { id }
   } = event;
+
+  if (auction.seller !== email) {
+    throw new createErrors.Forbidden('You are not the seller of this auction!');
+  }
 
   const auction = await getAuctionById(id);
   const base64 = body.replace(/^data:image\/\w+;base64,/, '');
