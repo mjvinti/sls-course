@@ -1,10 +1,13 @@
 const createErrors = require('http-errors');
 const httpErrorHandler = require('@middy/http-error-handler');
 const middy = require('@middy/core');
+const validator = require('@middy/validator');
+const { transpileSchema } = require('@middy/validator/transpile');
 
 const { getAuctionById } = require('./getAuction');
 const { setAuctionPictureUrl } = require('../lib/setAuctionPictureUrl');
 const { uploadPictureToS3 } = require('../lib/uploadPictureToS3');
+const uploadAuctionPictureSchema = require('../lib/schemas/uploadAuctionPictureSchema');
 
 const uploadAuctionPicture = async (event, context) => {
   const {
@@ -36,5 +39,13 @@ const uploadAuctionPicture = async (event, context) => {
 };
 
 module.exports = {
-  handler: middy(uploadAuctionPicture).use(httpErrorHandler())
+  handler: middy(uploadAuctionPicture)
+    .use(httpErrorHandler())
+    .use(
+      validator({
+        eventSchema: transpileSchema(uploadAuctionPictureSchema),
+        i18nEnabled: false,
+        ajvOptions: { useDefaults: true }
+      })
+    )
 };
