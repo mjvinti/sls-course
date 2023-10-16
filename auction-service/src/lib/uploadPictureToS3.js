@@ -12,7 +12,7 @@ const uploadPictureToS3 = async (key, body) => {
       Key: key
     })
     .promise();
-  return result;
+  return result.Location;
 };
 
 module.exports = { uploadPictureToS3 };

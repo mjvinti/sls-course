@@ -3,6 +3,7 @@ const httpErrorHandler = require('@middy/http-error-handler');
 const middy = require('@middy/core');
 
 const { getAuctionById } = require('./getAuction');
+const { setAuctionPictureUrl } = require('../lib/setAuctionPictureUrl');
 const { uploadPictureToS3 } = require('../lib/uploadPictureToS3');
 
 const uploadAuctionPicture = async (event, context) => {
@@ -15,18 +16,16 @@ const uploadAuctionPicture = async (event, context) => {
   const base64 = body.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64, 'base64');
 
+  let updatedAuction;
   try {
-    const uploadToS3Result = await uploadPictureToS3(
-      auction.id + '.jpg',
-      buffer
-    );
-    console.log(uploadToS3Result);
+    const pictureUrl = await uploadPictureToS3(auction.id + '.jpg', buffer);
+    updatedAuction = await setAuctionPictureUrl(auction.id, pictureUrl);
   } catch (error) {
     console.error(error);
     throw new createErrors.InternalServerError(error);
   }
 
-  return { statusCode: 200, body: JSON.stringify({}) };
+  return { statusCode: 200, body: JSON.stringify(updatedAuction) };
 };
 
 module.exports = {
