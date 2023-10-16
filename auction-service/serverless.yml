@@ -29,6 +29,7 @@ functions:
     handler: src/handlers/createAuction.handler
     events:
       - http:
+          cors: true
           method: POST
           path: /auction
           authorizer:
@@ -40,6 +41,7 @@ functions:
     handler: src/handlers/getAuctions.handler
     events:
       - http:
+          cors: true
           method: GET
           path: /auctions
           authorizer:
@@ -51,6 +53,7 @@ functions:
     handler: src/handlers/getAuction.handler
     events:
       - http:
+          cors: true
           method: GET
           path: /auction/{id}
           authorizer:
@@ -62,6 +65,7 @@ functions:
     handler: src/handlers/placeBid.handler
     events:
       - http:
+          cors: true
           method: PATCH
           path: /auction/{id}/bid
           authorizer:
@@ -73,6 +77,7 @@ functions:
     handler: src/handlers/uploadAuctionPicture.handler
     events:
       - http:
+          cors: true
           method: PATCH
           path: /auction/{id}/picture
           authorizer:

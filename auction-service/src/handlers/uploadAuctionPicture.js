@@ -3,6 +3,7 @@ const httpErrorHandler = require('@middy/http-error-handler');
 const middy = require('@middy/core');
 const validator = require('@middy/validator');
 const { transpileSchema } = require('@middy/validator/transpile');
+const cors = require('@middy/http-cors');
 
 const { getAuctionById } = require('./getAuction');
 const { setAuctionPictureUrl } = require('../lib/setAuctionPictureUrl');
@@ -48,4 +49,5 @@ module.exports = {
         ajvOptions: { useDefaults: true }
       })
     )
+    .use(cors())
 };
